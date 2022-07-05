@@ -1,4 +1,4 @@
-package config
+package Config
 
 import (
 	"Project_Rent_Book/entity"
@@ -9,14 +9,16 @@ import (
 )
 
 func InitDB() *gorm.DB {
-	dsn := "root:@tcp(127.0.0.1:3306)/db_Project_Rent_Book?charset=utf8&parseTime=true"
+	dsn := "root:@tcp(127.0.0.1:3306)/Project_Rent_Book?charset=utf8&parseTime=true"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 		return nil
 	}
-	db.AutoMigrate(&entity.User{}, &entity.Book{}, &entity.PinjamBuku{})
-	//db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
+	db.AutoMigrate(&entity.User{})
+	//db.AutoMigrate(&entity.Book{})
+//AutoMigrate(&entity.PinjamBuku{})
+	//db.Set(le_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 
 	return db
 }

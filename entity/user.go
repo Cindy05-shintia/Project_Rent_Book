@@ -2,18 +2,16 @@ package entity
 
 import (
 	"log"
-	"time"
 
 	"gorm.io/gorm"
 )
 
 type User struct {
-	ID         uint
-	Nama       string
-	Email      string
-	Password   string
-	Status     bool
-	created_at time.Time
+	gorm.Model
+	Nama     string
+	Email    string
+	Password string
+	Umur     int
 }
 
 type SignUp struct {
@@ -21,9 +19,9 @@ type SignUp struct {
 }
 
 func (su *SignUp) RegisterUser(UserBaru User) User {
-	err := su.DB.Create(UserBaru).Error
+	err := su.DB.Create(&UserBaru).Error
 	if err != nil {
-		log.Print(err)
+		log.Fatal(err)
 		return User{}
 	}
 	return UserBaru
@@ -32,17 +30,16 @@ func (su *SignUp) RegisterUser(UserBaru User) User {
 func (su *SignUp) LoginUser() []User {
 	var ListUser = []User{}
 
-	if err := su.DB.Find(&ListUser).Error; err != nil {
+	if err := su.DB.Where("Nama = ? AND Password = ?").Find(&ListUser).Error; err != nil {
 		log.Print(err)
 		return nil
 	}
 	return ListUser
 }
 
-// func (su *SignUp) UpdateUser() user {
-// 	var Update user
-// 	err := su.DB.Model(&Update).Updates(user{Nama: "", Email: "", Password: "", Status: false})
-// 	if err != nil {
+// func (su *SignUp) UpdateUser() User {
+// 	var Update User
+// 	if err := su.DB.Model(&Update).Select("*").Updates(User{}).Error; err != nil {
 // 		log.Fatal(err)
 // 		return nil
 // 	}

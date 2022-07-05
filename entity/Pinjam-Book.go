@@ -1,11 +1,21 @@
 package entity
 
-import "time"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type PinjamBuku struct {
-	IDPinjam       uint
+	gorm.Model
 	IDBook         int
 	IDuser         int
 	TanggalPinjam  time.Time
 	TanggalKembali time.Time
 }
+
+type Pinjam struct {
+	DB *gorm.DB
+}
+
+//func (p *Pinjam) PinjamanBuku()
